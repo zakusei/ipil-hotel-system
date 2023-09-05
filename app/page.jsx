@@ -11,15 +11,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { AiOutlineExport } from "react-icons/ai";
 
 const Home = () => {
   return (
     <main className="flex">
       <SideNav />
-      <Container className="ml-72 h-screen">
+      <Container className="h-screen md:ml-72">
         <TopNav />
-        <header className="flex items-center justify-between p-12">
-          <section>
+        <header className="items-center justify-between p-12 md:flex">
+          <section className="mb-4 md:mb-0">
             <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
               Dashboard Overview
             </h2>
@@ -27,12 +28,14 @@ const Home = () => {
               Welcome to Ipil Hotel Management System
             </p>
           </section>
-          <section className="flex gap-4">
+          <section className="flex gap-4 md:flex-row">
             <DatePickerWithRange />
-            <Button>Export Reports</Button>
+            <Button variant="outline" className="gap-4">
+              <AiOutlineExport /> Export Reports
+            </Button>
           </section>
         </header>
-        <section className="mx-auto grid w-full grid-cols-3 gap-6 place-self-center px-12">
+        <section className="mx-auto grid w-full grid-cols-1 gap-6 place-self-center px-12 md:grid-cols-3">
           <Card>
             <CardHeader>
               <CardTitle>Total Booking</CardTitle>
@@ -109,11 +112,11 @@ const Home = () => {
             </CardFooter>
           </Card>
         </section>
-        <section className="mx-auto p-12">
+        {/* <section className="mx-auto p-12">
           <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
             Available Rooms
           </h2>
-        </section>
+        </section> */}
       </Container>
     </main>
   );

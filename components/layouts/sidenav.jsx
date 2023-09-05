@@ -1,13 +1,17 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { BiSolidDashboard } from "react-icons/bi";
 import { MdBedroomParent } from "react-icons/md";
 import { AiFillCalendar, AiFillSetting } from "react-icons/ai";
+import { usePathname } from "next/navigation";
 
 const SideNav = () => {
+  const pathname = usePathname();
+  console.log(pathname);
   return (
-    <aside className="fixed h-screen w-72 border-r bg-background">
+    <aside className="fixed hidden h-screen w-72 flex-col border-r bg-background md:flex">
       <nav className="relative h-full p-6 py-12 text-center">
         <figure>
           <Image
@@ -24,8 +28,10 @@ const SideNav = () => {
         <ul className="mt-6 grid gap-4">
           <li>
             <Link
-              href="#"
-              className={`flex w-full items-center justify-start gap-4 rounded-md px-4  py-3 text-sm font-medium transition-colors hover:bg-yellow-200`}
+              href="/"
+              className={`flex w-full items-center justify-start gap-4 rounded-md px-4  py-3 text-sm font-medium transition-colors hover:bg-yellow-200 ${
+                pathname == "/" && "bg-yellow-200"
+              }`}
             >
               <BiSolidDashboard />
               Dashboard
@@ -33,8 +39,10 @@ const SideNav = () => {
           </li>
           <li>
             <Link
-              href="#"
-              className={`flex w-full items-center justify-start gap-4 rounded-md px-4  py-3 text-sm font-medium transition-colors hover:bg-yellow-200`}
+              href="/bookings"
+              className={`flex w-full items-center justify-start gap-4 rounded-md px-4  py-3 text-sm font-medium transition-colors hover:bg-yellow-200 ${
+                pathname == "/bookings" && "bg-yellow-200"
+              }`}
             >
               <AiFillCalendar />
               Bookings
@@ -42,8 +50,10 @@ const SideNav = () => {
           </li>
           <li>
             <Link
-              href="#"
-              className={`flex w-full items-center justify-start gap-4 rounded-md px-4 py-3 text-sm font-medium transition-colors hover:bg-yellow-200`}
+              href="/rooms"
+              className={`flex w-full items-center justify-start gap-4 rounded-md px-4 py-3 text-sm font-medium transition-colors hover:bg-yellow-200 ${
+                pathname == "/rooms" && "bg-yellow-200"
+              }`}
             >
               <MdBedroomParent />
               Rooms
