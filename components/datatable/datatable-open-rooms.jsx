@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -45,6 +45,7 @@ import {
 
 export const data = [
   {
+    id: 0,
     room_no: "101",
     room_type: "Single",
     meal: "None",
@@ -53,6 +54,7 @@ export const data = [
     status: "Open",
   },
   {
+    id: 1,
     room_no: "102",
     room_type: "Delux",
     meal: "Two",
@@ -61,6 +63,7 @@ export const data = [
     status: "Open",
   },
   {
+    id: 2,
     room_no: "103",
     room_type: "Double",
     meal: "Breakfast",
@@ -69,6 +72,7 @@ export const data = [
     status: "Open",
   },
   {
+    id: 3,
     room_no: "104",
     room_type: "Delux",
     meal: "Dinner",
@@ -146,7 +150,10 @@ export const columns = [
   },
 ];
 
+import { useSelectedRooms } from "@/lib/store-selected-rooms";
+
 export function DataTableOpenRooms() {
+  const { setSelectedRooms } = useSelectedRooms();
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
@@ -170,6 +177,20 @@ export function DataTableOpenRooms() {
       rowSelection,
     },
   });
+
+  useEffect(() => {
+    const setSelection = () => {
+      if (Object.keys(rowSelection).length < 1) return;
+      let rooms = [];
+      for (let i = 0; i < Object.keys(rowSelection).length; i++) {
+        let { room_no } = data[Object.keys(rowSelection)[i]];
+        rooms.push(room_no);
+      }
+      setSelectedRooms(rooms);
+      // console.log(rooms);
+    };
+    setSelection();
+  }, [rowSelection]);
 
   return (
     <div className="w-full">
@@ -228,7 +249,7 @@ export function DataTableOpenRooms() {
       </div>
       <div className="flex items-center justify-end gap-4 space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of
+          {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <DataTablePagination table={table} />

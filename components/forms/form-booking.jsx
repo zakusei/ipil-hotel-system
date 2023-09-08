@@ -26,9 +26,7 @@ import {
 } from "@/components/ui/select";
 
 import { Separator } from "@/components/ui/separator";
-
 import { DatePickerWithRange } from "@/components/daterange-picker";
-
 import { DataTableOpenRooms } from "@/components/datatable/datatable-open-rooms";
 
 const formSchema = z.object({
@@ -38,7 +36,6 @@ const formSchema = z.object({
   last_name: z.string().min(2, {
     message: "Fullname must be at least 2 characters.",
   }),
-  gender: z.string({ required_error: "Gender field cannot be empty!" }),
   email: z.string().email({
     message: "Invalid email address!",
   }),
@@ -48,8 +45,10 @@ const formSchema = z.object({
   address: z.string({ required_error: "Address field is required." }),
 });
 
+import { useSelectedRooms } from "@/lib/store-selected-rooms";
+
 export const FormBooking = () => {
-  const [selectedRooms, setSelectedRooms] = useState([]);
+  const { selectedRooms } = useSelectedRooms();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -57,10 +56,10 @@ export const FormBooking = () => {
     },
   });
 
-  const onSubmit = (formData) => {
-    formData.preventDefault();
+  const onSubmit = (data) => {
     if (selectedRooms < 1) return;
-    console.log(formData);
+    data["rooms"] = selectedRooms;
+    console.log(data);
   };
 
   return (
@@ -160,7 +159,7 @@ export const FormBooking = () => {
         <Separator className="my-4 md:col-span-3" />
         <FormField
           control={form.control}
-          name="address"
+          name="stay_dates"
           className="col-span-2"
           render={({ field }) => (
             <FormItem>
