@@ -1,9 +1,7 @@
 import SideNav from "@/components/layouts/sidenav";
 import Container from "@/components/layouts/container";
 import TopNav from "@/components/layouts/topnav";
-import Link from "next/link";
-import { Button, buttonVariants } from "@/components/ui/button";
-import BookingForm from "@/components/layouts/booking-form";
+import { FormBooking } from "@/components/forms/form-booking";
 
 const AddBookings = () => {
   return (
@@ -20,7 +18,7 @@ const AddBookings = () => {
           </section>
         </header>
         <section className="h-56 w-full px-12">
-          <BookingForm />
+          <FormBooking />
         </section>
       </Container>
     </main>

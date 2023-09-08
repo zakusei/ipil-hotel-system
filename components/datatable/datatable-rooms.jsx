@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -13,7 +13,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { MoreHorizontal, ChevronDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -35,30 +36,45 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
+import { DataTablePagination } from "@/components/datatable/datatable-pagination";
 
-const data = [
+import {
+  DataTableBulkAction,
+  DataTableSearchInput,
+} from "@/components/datatable/datatable-toolbar";
+
+export const data = [
   {
-    id: "AB-101",
-    customer: "Landrei Zerna",
-    booking: "Active",
+    room_no: "101",
     room_type: "Single",
-    email: "zernalandrei@gmail.com",
-    mobile_number: "+639455868528",
-    arrive: "10 Feb 2023",
-    departure: "12 Feb 2023",
-    payment: "Paid",
+    meal: "None",
+    bed_capacity: "1",
+    rent: "599 PHP",
+    status: "Booked",
   },
   {
-    id: "AB-105",
-    customer: "Jhunel Amantiad",
-    booking: "Pending",
-    room_type: "Super Delux",
-    email: "jhunelamantiad@gmail.com",
-    mobile_number: "+639123456789",
-    arrive: "12 August 2023",
-    departure: "17 August 2023",
-    payment: "Pending",
+    room_no: "102",
+    room_type: "Delux",
+    meal: "Two",
+    bed_capacity: "2",
+    rent: "1,599 PHP",
+    status: "Pending",
+  },
+  {
+    room_no: "103",
+    room_type: "Double",
+    meal: "Breakfast",
+    bed_capacity: "1",
+    rent: "899 PHP",
+    status: "Open",
+  },
+  {
+    room_no: "104",
+    room_type: "Delux",
+    meal: "Dinner",
+    bed_capacity: "1",
+    rent: "1,599 PHP",
+    status: "Inactive",
   },
 ];
 
@@ -79,29 +95,12 @@ export const columns = [
         aria-label="Select row"
       />
     ),
-    enableSorting: false,
-    enableHiding: false,
   },
   {
-    accessorKey: "customer",
-    header: "Customer",
+    accessorKey: "room_no",
+    header: "Room No.",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("customer")}</div>
-    ),
-  },
-  {
-    accessorKey: "booking",
-    header: "Booking",
-    cell: ({ row }) => (
-      <div className="capitalize">
-        {row.getValue("booking") == "Active" ? (
-          <Badge className="bg-yellow-300 text-foreground hover:bg-yellow-200">
-            {row.getValue("booking")}
-          </Badge>
-        ) : (
-          <Badge variant="secondary">{row.getValue("booking")}</Badge>
-        )}
-      </div>
+      <div className="capitalize">{row.getValue("room_no")}</div>
     ),
   },
   {
@@ -112,45 +111,38 @@ export const columns = [
     ),
   },
   {
-    accessorKey: "email",
-    header: "Email",
-    cell: ({ row }) => <div>{row.getValue("email")}</div>,
+    accessorKey: "meal",
+    header: "Meal",
+    cell: ({ row }) => <div className="capitalize">{row.getValue("meal")}</div>,
   },
   {
-    accessorKey: "mobile_number",
-    header: "Mobile Number",
+    accessorKey: "bed_capacity",
+    header: "Bed Capacity",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("mobile_number")}</div>
+      <div className="capitalize">{row.getValue("bed_capacity")}</div>
     ),
   },
   {
-    accessorKey: "arrive",
-    header: "Arrive",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("arrive")}</div>
-    ),
+    accessorKey: "rent",
+    header: "Rent",
+    cell: ({ row }) => <div className="capitalize">{row.getValue("rent")}</div>,
   },
   {
-    accessorKey: "departure",
-    header: "Departure",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("departure")}</div>
-    ),
-  },
-  {
-    accessorKey: "payment",
-    header: "Payment",
-    cell: ({ row }) => (
-      <div className="capitalize">
-        {row.getValue("payment") == "Paid" ? (
-          <Badge className="bg-yellow-300 text-foreground hover:bg-yellow-200">
-            {row.getValue("payment")}
-          </Badge>
-        ) : (
-          <Badge variant="secondary">{row.getValue("payment")}</Badge>
-        )}
-      </div>
-    ),
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const status = row.getValue("status");
+      return (
+        <>
+          {status == "Booked" && <Badge>Booked</Badge>}
+          {status == "Pending" && <Badge variant="secondary">Pending</Badge>}
+          {status == "Open" && <Badge variant="outline">Available</Badge>}
+          {status == "Inactive" && (
+            <Badge variant="destructive">Inactive</Badge>
+          )}
+        </>
+      );
+    },
   },
   {
     id: "actions",
@@ -184,11 +176,11 @@ export const columns = [
   },
 ];
 
-export function DataTable() {
-  const [sorting, setSorting] = React.useState([]);
-  const [columnFilters, setColumnFilters] = React.useState([]);
-  const [columnVisibility, setColumnVisibility] = React.useState({});
-  const [rowSelection, setRowSelection] = React.useState({});
+export function DataTableRooms() {
+  const [sorting, setSorting] = useState([]);
+  const [columnFilters, setColumnFilters] = useState([]);
+  const [columnVisibility, setColumnVisibility] = useState({});
+  const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
     data,
@@ -208,43 +200,11 @@ export function DataTable() {
       rowSelection,
     },
   });
+
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter emails..."
-          value={table.getColumn("email")?.getFilterValue() ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <div className="flex items-center justify-between gap-4 py-4">
+        <DataTableSearchInput table={table} columnFilters={columnFilters} />
       </div>
       <div className="rounded-md border">
         <Table>
@@ -296,29 +256,13 @@ export function DataTable() {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-end gap-4 space-x-2 py-4">
+        <DataTableBulkAction table={table} />
         <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
+        <DataTablePagination table={table} />
       </div>
     </div>
   );

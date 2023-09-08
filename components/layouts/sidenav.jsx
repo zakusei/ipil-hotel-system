@@ -1,15 +1,12 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { BiSolidDashboard } from "react-icons/bi";
-import { MdBedroomParent } from "react-icons/md";
-import { AiFillCalendar, AiFillSetting } from "react-icons/ai";
+import { Button } from "@/components/ui/button";
+import { navItems as nav_links } from "@/lib/nav-items";
 import { usePathname } from "next/navigation";
 
 const SideNav = () => {
   const pathname = usePathname();
-  console.log(pathname);
   return (
     <aside className="fixed hidden h-screen w-72 flex-col border-r bg-background md:flex">
       <nav className="relative h-full p-6 py-12 text-center">
@@ -25,48 +22,20 @@ const SideNav = () => {
             Sibugay Hotel
           </h3>
         </figure>
-        <ul className="mt-6 grid gap-4">
+        <ul className="mt-6 grid gap-1">
           <li>
-            <Link
-              href="/"
-              className={`flex w-full items-center justify-start gap-4 rounded-md px-4  py-3 text-sm font-medium transition-colors hover:bg-yellow-200 ${
-                pathname == "/" && "bg-yellow-200"
-              }`}
-            >
-              <BiSolidDashboard />
-              Dashboard
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/bookings"
-              className={`flex w-full items-center justify-start gap-4 rounded-md px-4  py-3 text-sm font-medium transition-colors hover:bg-yellow-200 ${
-                pathname == "/bookings" && "bg-yellow-200"
-              }`}
-            >
-              <AiFillCalendar />
-              Bookings
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/rooms"
-              className={`flex w-full items-center justify-start gap-4 rounded-md px-4 py-3 text-sm font-medium transition-colors hover:bg-yellow-200 ${
-                pathname == "/rooms" && "bg-yellow-200"
-              }`}
-            >
-              <MdBedroomParent />
-              Rooms
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="#"
-              className={`flex w-full items-center justify-start gap-4 rounded-md px-4 py-3 text-sm font-medium transition-colors hover:bg-yellow-200`}
-            >
-              <AiFillSetting />
-              Settings
-            </Link>
+            {nav_links.map(({ href, item, icon }, index) => (
+              <Link
+                key={`link-${index}`}
+                href={href}
+                className={`flex w-full items-center justify-start gap-4 rounded-md px-4  py-3 text-sm font-medium transition-colors hover:bg-zinc-50 ${
+                  pathname == href && "bg-zinc-100"
+                }`}
+              >
+                {icon}
+                {item}
+              </Link>
+            ))}
           </li>
         </ul>
         <section className="absolute bottom-0 w-full py-6 pr-12">
