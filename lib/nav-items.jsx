@@ -10,8 +10,8 @@ export const navItems = [
     icon: <BiSolidDashboard />,
   },
   {
-    href: "/bookings",
-    item: "Rooom Bookings",
+    href: "/booking",
+    item: "Room Booking",
     icon: <AiFillCalendar />,
   },
   {
