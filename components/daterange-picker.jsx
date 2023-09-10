@@ -13,18 +13,19 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useEffect } from "react";
+import { useDateRangeState } from "@/lib/store-form-date-range";
 
-export function DatePickerWithRange({ className, handleSelect }) {
+export function DatePickerWithRange({ className }) {
+  const { setStayDates } = useDateRangeState();
   const [date, setDate] = React.useState({
     from: new Date(Date.now()),
     to: addDays(Date.now(), 1),
   });
-  useEffect(() => {
-    function logDate() {
-      console.log(date);
-    }
-    logDate();
+  React.useEffect(() => {
+    const init = () => {
+      setStayDates(date);
+    };
+    init();
   }, [date]);
   return (
     <div className={cn("grid gap-2", className)}>
@@ -61,7 +62,6 @@ export function DatePickerWithRange({ className, handleSelect }) {
             selected={date}
             onSelect={(e) => {
               setDate(e);
-              handleSelect(date);
             }}
             numberOfMonths={2}
           />

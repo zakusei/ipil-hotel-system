@@ -15,7 +15,7 @@ const Bookings = () => {
         <header className="mt-12 flex items-center justify-between px-12">
           <section>
             <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
-              Room Booking Lists
+              Booking Lists
             </h2>
             <p className="text-muted-foreground">
               You have total 2,595 booking's.
@@ -26,7 +26,7 @@ const Bookings = () => {
               <AiOutlineExport /> Export as Excel
             </Button>
             <Link
-              href="/bookings/add"
+              href="/booking/add"
               className={buttonVariants({ variant: "" })}
             >
               <AiOutlinePlus />
