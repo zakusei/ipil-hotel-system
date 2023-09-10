@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -8,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -42,23 +40,22 @@ const formSchema = z.object({
   phone_number: z.string().min(11, {
     message: "Phone number must be 11 characters",
   }),
-  address: z.string({ required_error: "Address field is required." }),
 });
 
 import { useSelectedRooms } from "@/lib/store-selected-rooms";
+import { useDateRangeState } from "@/lib/store-form-date-range";
 
 export const FormBooking = () => {
-  const { selectedRooms } = useSelectedRooms();
+  const { selected_room } = useSelectedRooms();
+  const { stay_date } = useDateRangeState();
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      fullname: "",
-    },
   });
 
   const onSubmit = (data) => {
-    if (selectedRooms < 1) return;
-    data["rooms"] = selectedRooms;
+    if (selected_room < 1) return;
+    data["stay_room"] = selected_room;
+    data["stay_date"] = stay_date;
     console.log(data);
   };
 
@@ -159,7 +156,7 @@ export const FormBooking = () => {
         <Separator className="my-4 md:col-span-3" />
         <FormField
           control={form.control}
-          name="stay_dates"
+          name="stay_date"
           className="col-span-2"
           render={({ field }) => (
             <FormItem>
@@ -174,7 +171,9 @@ export const FormBooking = () => {
         <section className="col-span-3">
           <DataTableOpenRooms />
         </section>
-        <Button className="mb-6">Submit Booking Form</Button>
+        <Button type="submit" className="mb-6">
+          Submit Booking Form
+        </Button>
       </form>
     </Form>
   );
