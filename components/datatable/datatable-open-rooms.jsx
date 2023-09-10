@@ -187,7 +187,6 @@ export function DataTableOpenRooms() {
         rooms.push(room_no);
       }
       setSelectedRooms(rooms);
-      // console.log(rooms);
     };
     setSelection();
   }, [rowSelection]);

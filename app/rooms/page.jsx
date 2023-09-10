@@ -6,7 +6,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { AiOutlinePlus, AiOutlineExport } from "react-icons/ai";
 import { DataTableRooms } from "@/components/datatable/datatable-rooms";
 
-const Bookings = () => {
+const Rooms = () => {
   return (
     <main className="flex">
       <SideNav />
@@ -15,11 +15,9 @@ const Bookings = () => {
         <header className="mt-12 flex items-center justify-between px-12">
           <section>
             <h2 className="mt-10 scroll-m-20 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
-              Hotel Room Lists
+              Manage Hotel Rooms
             </h2>
-            <p className="text-muted-foreground">
-              You have total 2,595 booking's.
-            </p>
+            <p className="text-muted-foreground">You have total 59 rooms.</p>
           </section>
           <section className="flex gap-4">
             <Link
@@ -44,4 +42,4 @@ const Bookings = () => {
   );
 };
 
-export default Bookings;
+export default Rooms;
