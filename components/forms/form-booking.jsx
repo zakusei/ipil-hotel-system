@@ -172,7 +172,7 @@ export const FormBooking = () => {
           <DataTableOpenRooms />
         </section>
         <Button type="submit" className="mb-6">
-          Submit Booking Form
+          Submit Check in
         </Button>
       </form>
     </Form>
